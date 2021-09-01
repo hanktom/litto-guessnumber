@@ -10,6 +10,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.tom.numberguess.databinding.ActivityMainBinding
 
 //Controller
@@ -25,13 +29,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
+        val viewModel : GuessViewModel by viewModels()
+        viewModel.min.observe(this, Observer {
+            binding.contentMain.min.text = it.toString()
+        })
+        viewModel.max.observe(this, Observer {
+            binding.contentMain.max.text = it.toString()
+        })
+        viewModel.bingo.observe(this, Observer {
+            if (it) {
+                AlertDialog.Builder(this)
+                    .setTitle("Game result")
+                    .setMessage("You got it!")
+                    .setPositiveButton("OK", null)
+                    .show()
+            }
+        })
+        binding.contentMain.guess.setOnClickListener {
+            val num = binding.contentMain.number.text.toString().toInt()
+            viewModel.guess(num)
+//            viewModel.add()
+        }
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-        binding.contentMain.min.text = "1"
-        binding.contentMain.max.text = "100"
 
     }
 
