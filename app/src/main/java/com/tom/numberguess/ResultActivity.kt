@@ -15,7 +15,8 @@ class ResultActivity : AppCompatActivity() {
         val times = intent.getIntExtra("TIMES", -1)
         binding.result.text = times.toString()
         binding.button.setOnClickListener {
-            setResult(RESULT_OK)
+            intent.putExtra("ABC", 123)
+            setResult(RESULT_OK, intent)
             finish()
         }
     }

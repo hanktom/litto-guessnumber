@@ -3,18 +3,14 @@ package com.tom.numberguess
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.tom.numberguess.databinding.ActivityMainBinding
 
 //Controller
@@ -23,6 +19,10 @@ class MainActivity : AppCompatActivity() {
     private val TAG: String = MainActivity::class.java.simpleName
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    //Contract
+    val goResult = registerForActivityResult(StartActivityForResult()) { result ->
+        Log.d(TAG, "goResult callback: ${result.data?.getIntExtra("ABC", -1)}")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +58,8 @@ class MainActivity : AppCompatActivity() {
                     putString("NAME", "Hank")
                 })
             }
-            startActivityForResult(intent, 35)
+            goResult.launch(intent)
+//            startActivityForResult(intent, 35)
 //            startActivity(intent)
         }
 
