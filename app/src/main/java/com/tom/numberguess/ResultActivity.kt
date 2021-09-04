@@ -14,5 +14,9 @@ class ResultActivity : AppCompatActivity() {
         //get result
         val times = intent.getIntExtra("TIMES", -1)
         binding.result.text = times.toString()
+        binding.button.setOnClickListener {
+            setResult(RESULT_OK)
+            finish()
+        }
     }
 }
