@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     val goResult = registerForActivityResult(StartActivityForResult()) { result ->
         Log.d(TAG, "goResult callback: ${result.data?.getIntExtra("ABC", -1)}")
     }
+    val viewModel : GuessViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        val viewModel : GuessViewModel by viewModels()
+
         viewModel.min.observe(this, Observer {
             binding.contentMain.min.text = it.toString()
         })
